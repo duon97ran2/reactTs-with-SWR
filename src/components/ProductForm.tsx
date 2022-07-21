@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, message, Result, Row, Select, Spin, Upload } from 'antd'
+import { Button, Col, Form, Input, InputNumber, message, Result, Row, Select, Spin, Upload } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload'
 import React, { useEffect, useState } from 'react'
@@ -74,6 +74,16 @@ const ProductForm = ({ id }: Props) => {
   const onFinishFailed = () => {
     message.error("Hãy điền đầy đủ các trường")
   }
+  useEffect(() => {
+    if (category) {
+      if (product) {
+        if (!imageUrl) {
+          setImageUrl(product.image[0])
+        }
+        productForm.setFieldsValue(product);
+      }
+    }
+  }, [category, product])
   if (!category || (!product && id.length != 0)) {
     return <StyledSpace >
       <Spin size="large" />
@@ -97,16 +107,6 @@ const ProductForm = ({ id }: Props) => {
     setImageUrl(false)
   }
   const activeCate = category.filter((item: any) => item.status == 1);
-  useEffect(() => {
-    if (category) {
-      if (product) {
-        if (!imageUrl) {
-          setImageUrl(product.image[0])
-        }
-        productForm.setFieldsValue(product);
-      }
-    }
-  }, [id])
 
   return (<Form
     name="productForm"
@@ -168,12 +168,9 @@ const ProductForm = ({ id }: Props) => {
             <Form.Item
               name="price"
               label="Giá sản phẩm"
-              rules={[{ required: true }, {
-                pattern: /^(?:\d*)$/,
-                message: "Giá sản phẩm bắt buộc phải là 1 số",
-              },]}
+              rules={[{ required: true }]}
               validateTrigger="onBlur"
-            ><Input />
+            ><InputNumber min="0" step={1000} style={{ "width": "100%", "borderRadius": "5px" }} />
             </Form.Item>
           </Col>
 
@@ -181,12 +178,19 @@ const ProductForm = ({ id }: Props) => {
             <Form.Item
               name="newPrice"
               label="Giá khuyến mãi"
-              rules={[{ required: true }, {
-                pattern: /^(?:\d*)$/,
-                message: "Giá khuyến mãi bắt buộc phải là 1 số",
-              },]}
+              dependencies={['price']}
+              rules={[{ required: true },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('price') > value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('Giá khuyến mãi phải nhỏ hơn giá sản phẩm'));
+                },
+              }),
+              ]}
               validateTrigger="onBlur"
-            ><Input />
+            ><InputNumber min="0" step={1000} style={{ "width": "100%", "borderRadius": "5px" }} />
             </Form.Item>
           </Col>
         </Row>
