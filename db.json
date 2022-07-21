@@ -1,0 +1,32 @@
+{
+  "cellphone": [
+    {
+      "id": 1,
+      "name": "Iphone",
+      "price": 30000,
+      "description": "Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, ",
+      "status": "show"
+    },
+    {
+      "id": 4,
+      "name": "Samsung",
+      "price": 30000,
+      "description": "Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, ",
+      "status": "show"
+    },
+    {
+      "id": 2,
+      "name": "Oppo",
+      "price": 30000,
+      "description": "Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, ",
+      "status": "show"
+    },
+    {
+      "id": 3,
+      "name": "Redmi",
+      "price": 30000,
+      "description": "Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, ",
+      "status": "show"
+    }
+  ]
+}
