@@ -12,7 +12,7 @@ interface DataType {
   _id: string,
   name: string,
   status: number,
-  // image: Array<string>,
+  image: Array<string>,
   // category: string,
   // price: number,
   newPrice: number,
@@ -27,12 +27,12 @@ const ListPhone = (props: Props) => {
       dataIndex: 'name',
       key: 'name',
     },
-    // {
-    //   title: 'Hình ảnh',
-    //   dataIndex: 'image',
-    //   key: 'image',
-    //   render: (_, record) => <img src={record.image[0]} alt="" />
-    // },
+    {
+      title: 'Hình ảnh',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_, record) => <img width={200} src={record.image[0]} alt="" />
+    },
     // {
     //   title: 'Danh mục',
     //   dataIndex: 'category',
@@ -91,7 +91,7 @@ const ListPhone = (props: Props) => {
       // price: item.price,
       newPrice: item.newPrice,
       _id: item._id,
-      // image: item.image,
+      image: item.image,
       shortDescription: item.shortDescription,
       status: item.status,
       // category: item.category.name

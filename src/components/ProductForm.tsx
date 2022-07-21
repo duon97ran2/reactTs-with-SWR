@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, message, Result, Row, Select, Spin, Upload } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
@@ -20,22 +20,9 @@ const ProductForm = ({ id }: Props) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<any>();
   const { data: category, error: categoryError } = useCategory();
-  const { productAdd } = useProduct();
+  const { data: product, error: productError } = useSWR(id ? `/products/${id}` : null);
+  const { productAdd, productUpdate } = useProduct();
   const [productForm] = Form.useForm();
-  if (id.length != 0) {
-    const { data: product, error: productError } = useSWR(`/products/${id}`);
-
-    if (!product) {
-      message.loading("Đang tải");
-    }
-    if (productError) {
-      message.error("Không lấy được dữ liệu sản phẩm")
-    }
-    if (product) {
-      productForm.setFieldsValue(product);
-
-    }
-  }
   const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -73,19 +60,26 @@ const ProductForm = ({ id }: Props) => {
   const navigate = useNavigate();
   const onFinish = (values: any) => {
     const payload = { ...values, price: +values.price, newPrice: +values.newPrice };
-    productAdd(payload);
-    message.success("Thêm sản phẩm thành công", () => { navigate("/admin/cellphone") })
-    navigate("/admin/cellphone");
+    if (id.length != 0) {
+      productUpdate(id, payload)
+      message.success("Cập nhật sản phẩm thành công", () => { navigate("/admin/cellphone") })
+      navigate("/admin/cellphone");
+    }
+    else {
+      productAdd(payload);
+      message.success("Thêm sản phẩm thành công", () => { navigate("/admin/cellphone") })
+      navigate("/admin/cellphone");
+    }
   }
   const onFinishFailed = () => {
     message.error("Hãy điền đầy đủ các trường")
   }
-  if (!category) {
+  if (!category || (!product && id.length != 0)) {
     return <StyledSpace >
       <Spin size="large" />
     </StyledSpace>
   }
-  if (categoryError) {
+  if (categoryError || productError) {
     return <Result
       status="warning"
       title="There are some problems with your operation."
@@ -96,7 +90,24 @@ const ProductForm = ({ id }: Props) => {
       }
     />
   }
+  const handleCancel = () => {
+    productForm.setFieldsValue({
+      image: null
+    });
+    setImageUrl(false)
+  }
   const activeCate = category.filter((item: any) => item.status == 1);
+  useEffect(() => {
+    if (category) {
+      if (product) {
+        if (!imageUrl) {
+          setImageUrl(product.image[0])
+        }
+        productForm.setFieldsValue(product);
+      }
+    }
+  }, [id])
+
   return (<Form
     name="productForm"
     layout='vertical'
@@ -110,12 +121,7 @@ const ProductForm = ({ id }: Props) => {
         <Form.Item name='image' rules={[{ required: true }]} >
           {imageUrl ?
             <div style={{ "position": "relative" }}>
-              <StyledCancelButton onClick={() => {
-                productForm.setFieldsValue({
-                  image: null
-                });
-                setImageUrl(null)
-              }} />
+              <StyledCancelButton onClick={() => handleCancel()} />
               <img style={{ "width": "100%" }} src={imageUrl} alt="" />
             </div> : <StyledUploadContainer>
 
