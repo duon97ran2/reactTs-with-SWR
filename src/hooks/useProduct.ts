@@ -1,3 +1,4 @@
+import { getByCategory } from './../api/product';
 import useSWR from 'swr';
 import { add, update } from '../api/product';
 import { requestProduct } from '../types/products';
@@ -13,8 +14,13 @@ const useProduct = () => {
     const product = await add(productData);
     mutate([...data, product]);
   }
+  const getProductByCategory = async (id: string) => {
+    const products = await getByCategory(id);
+
+    mutate(products);
+  }
   return {
-    data, error, productAdd, productUpdate
+    data, error, productAdd, productUpdate, getProductByCategory
   }
 }
 

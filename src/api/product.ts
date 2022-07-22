@@ -12,3 +12,6 @@ export const add = (data: any) => {
 export const update = (id: string, data: any) => {
   return instance.put(`/products/${id}`, data);
 }
+export const getByCategory = (id: string) => {
+  return instance.get(`/products/category/${id}`)
+}

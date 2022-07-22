@@ -1,10 +1,12 @@
-import { Button, message, Result, Space, Spin, Switch, Table } from 'antd'
+import { Button, message, Result, Select, Space, Spin, Switch, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import React from 'react'
 import { FaEdit, FaPlus } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
-import { StyledAddButton, StyledAdminHeadline, StyledSpace } from '../../../components/styled-components'
+import { StyledAddButton, StyledAdminHeadline, StyledFormSelect, StyledSpace } from '../../../components/styled-components'
+import useCategory from '../../../hooks/useCategory'
 import useProduct from '../../../hooks/useProduct'
+import { categoryType } from '../../../types/categoryType'
 
 
 type Props = {}
@@ -18,9 +20,12 @@ interface DataType {
   newPrice: number,
   // shortDescription: string
 }
+const { Option } = Select
+
 const ListPhone = (props: Props) => {
-  const { data, error, productUpdate } = useProduct()
-  const updateStatus = (id: string, status: any) => { productUpdate(id, status) }
+  const { data, error, productUpdate, getProductByCategory } = useProduct()
+  const { data: category, error: categoryError } = useCategory();
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'Tên sản phẩm',
@@ -82,8 +87,8 @@ const ListPhone = (props: Props) => {
       }
     />
   }
+  const activeCate = category.filter((item: any) => item.status == 1);
   const newData = data?.filter((item: any) => item.category.status == 1);
-  console.log(newData);
   const productData = newData.map((item: any, index: number) => {
     return {
       key: index + 1,
@@ -97,6 +102,7 @@ const ListPhone = (props: Props) => {
       // category: item.category.name
     }
   })
+  const updateStatus = (id: string, status: any) => { productUpdate(id, status) }
   return (
     <>
       <div style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "center", "marginBottom": "20px" }}>
@@ -107,6 +113,9 @@ const ListPhone = (props: Props) => {
           <FaPlus />
         </StyledAddButton>
       </div>
+      <StyledFormSelect style={{ "width": "200px" }} onSelect={(id: any) => getProductByCategory(id)} defaultValue={activeCate[0]._id}>
+        {activeCate.map((item: categoryType) => <Option key={item._id} value={item._id}>{item.name}</Option>)}
+      </StyledFormSelect>
       <Table columns={columns} dataSource={productData} size='small' />
     </>
   )
