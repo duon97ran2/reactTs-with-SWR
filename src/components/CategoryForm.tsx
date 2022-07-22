@@ -30,9 +30,12 @@ const CategoryForm = (props: Props) => {
     if (props.id.length !== 0) {
       updateCategory(props.id, values);
       navigate("/admin/category");
+
     }
     else {
       addCategory({ ...values, status: 1 })
+
+
     }
   };
   const onFinishFailed = () => { }

@@ -52,6 +52,7 @@ const ListPhone = (props: Props) => {
       title: 'Thành tiền ',
       dataIndex: 'newPrice',
       key: 'newPrice',
+      sorter: (a, b) => a.newPrice - b.newPrice,
     },
     {
       title: 'Mô tả ',
@@ -62,7 +63,8 @@ const ListPhone = (props: Props) => {
       title: 'Ẩn/hiện',
       dataIndex: 'status',
       key: 'status',
-      render: (_, record) => <Switch checked={!record.status ? true : false} onClick={() => { updateStatus(record._id, { status: !record.status ? 1 : 0 }) }}></Switch>
+      render: (_, record) => <Switch checked={!record.status ? true : false} onClick={() => { updateStatus(record._id, { status: !record.status ? 1 : 0 }) }}></Switch>,
+      sorter: (a, b) => a.status - b.status,
     },
     {
       title: 'Thao tác',
@@ -88,7 +90,9 @@ const ListPhone = (props: Props) => {
     />
   }
   const activeCate = category.filter((item: any) => item.status == 1);
+  console.log(data);
   const newData = data?.filter((item: any) => item.category.status == 1);
+  console.log(newData);
   const productData = newData.map((item: any, index: number) => {
     return {
       key: index + 1,
@@ -101,8 +105,8 @@ const ListPhone = (props: Props) => {
       status: item.status,
       // category: item.category.name
     }
-  })
-  const updateStatus = (id: string, status: any) => { productUpdate(id, status) }
+  });
+  const updateStatus = (id: string, status: any) => { productUpdate(id, status); }
   return (
     <>
       <div style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "center", "marginBottom": "20px" }}>

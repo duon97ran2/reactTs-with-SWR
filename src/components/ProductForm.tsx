@@ -61,12 +61,10 @@ const ProductForm = ({ id }: Props) => {
     const payload = { ...values, price: +values.price, newPrice: +values.newPrice };
     if (id.length != 0) {
       productUpdate(id, payload)
-      message.success("Cập nhật sản phẩm thành công", () => { navigate("/admin/cellphone") })
       navigate("/admin/cellphone");
     }
     else {
       productAdd(payload);
-      message.success("Thêm sản phẩm thành công", () => { navigate("/admin/cellphone") })
       navigate("/admin/cellphone");
     }
   }

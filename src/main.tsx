@@ -9,7 +9,9 @@ import instance from './api/instance';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 
-  <SWRConfig value={{ fetcher: async (url) => await instance.get(url) }}>
+  <SWRConfig value={{
+    fetcher: async (url) => await instance.get(url)
+  }}>
     <BrowserRouter>
       <App />
     </BrowserRouter>

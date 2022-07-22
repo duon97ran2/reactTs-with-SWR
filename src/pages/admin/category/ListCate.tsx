@@ -27,7 +27,8 @@ const ListCate = (props: Props) => {
       title: 'Ẩn/hiện',
       dataIndex: 'status',
       key: 'status',
-      render: (_, record) => <Switch checked={record.status ? true : false} onClick={() => { updateStatus(record._id, { status: !record.status ? 1 : 0 }) }}></Switch>
+      render: (_, record) => <Switch checked={record.status ? true : false} onClick={() => { updateStatus(record._id, { status: !record.status ? 1 : 0 }) }}></Switch>,
+      sorter: (a, b) => a.status - b.status,
     },
     {
       title: 'Thao tác',
