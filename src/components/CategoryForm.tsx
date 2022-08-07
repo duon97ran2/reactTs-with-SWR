@@ -1,14 +1,17 @@
-import { Button, Form, Input, message, Row } from 'antd'
+import { Button, Form, Input, message, Row, Select } from 'antd'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import { read } from '../api/category'
 import useCategory from '../hooks/useCategory'
+import { AiOutlineAudio, AiOutlineDesktop, AiOutlineFundProjectionScreen, AiOutlineLaptop, AiOutlinePhone, AiOutlineSetting, AiOutlineTablet } from "react-icons/ai"
+import { StyledFormSelect } from './styled-components'
 
 type Props = {
   id: string
 }
 
+const { Option } = Select
 const CategoryForm = (props: Props) => {
   const { addCategory, updateCategory } = useCategory();
   const [form] = Form.useForm();
@@ -21,7 +24,7 @@ const CategoryForm = (props: Props) => {
       message.error("Không lấy được dữ liệu sản phẩm")
     }
     if (data) {
-      form.setFieldsValue({ name: data.name })
+      form.setFieldsValue(data)
     }
   }
   const navigate = useNavigate();
@@ -34,8 +37,6 @@ const CategoryForm = (props: Props) => {
     }
     else {
       addCategory({ ...values, status: 1 })
-
-
     }
   };
   const onFinishFailed = () => { }
@@ -53,6 +54,35 @@ const CategoryForm = (props: Props) => {
           label="Tên danh mục"
           rules={[{ required: true, message: "Vui lòng điền tên danh mục" }]}
         ><Input />
+        </Form.Item>
+        <Form.Item
+          name="icon"
+          label="Biểu tượng danh mục"
+          rules={[{ required: true, message: "Vui lòng chọn biểu tượng danh mục" }]}
+        >
+          <StyledFormSelect>
+            <Option value="AiOutlineAudio">
+              <AiOutlineAudio />
+            </Option>
+            <Option value="AiOutlineLaptop">
+              <AiOutlineLaptop />
+            </Option>
+            <Option value="AiOutlinePhone">
+              <AiOutlinePhone />
+            </Option>
+            <Option value="AiOutlineSetting">
+              <AiOutlineSetting />
+            </Option>
+            <Option value="AiOutlineTablet">
+              <AiOutlineTablet />
+            </Option>
+            <Option value="AiOutlineFundProjectionScreen">
+              <AiOutlineFundProjectionScreen />
+            </Option>
+            <Option value="AiOutlineDesktop">
+              <AiOutlineDesktop />
+            </Option>
+          </StyledFormSelect>
         </Form.Item>
         <Button type='primary' htmlType='submit' style={{ "borderRadius": "5px" }}>{props.id.length != 0 ? "Update" : "Add"}</Button>
       </Form>

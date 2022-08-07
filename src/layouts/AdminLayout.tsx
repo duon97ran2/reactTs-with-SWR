@@ -1,26 +1,38 @@
-import { Breadcrumb, Layout, Menu, MenuProps } from 'antd'
-import { AiOutlineAudio, AiOutlineLaptop, AiOutlinePhone, AiOutlineSetting, AiOutlineTablet } from "react-icons/ai"
-import React from 'react'
-import { Link, Outlet } from 'react-router-dom';
+import { Breadcrumb, Button, Layout, Menu, MenuProps, Result, Spin } from 'antd'
+import { AiOutlineAudio, AiOutlineLaptop, AiOutlinePhone, AiOutlineSetting, AiOutlineShop, AiOutlineTablet } from "react-icons/ai"
+import React, { useEffect, useState } from 'react'
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logoImage from "../assets/img/anhhtus-logo.png"
 import SearchBar from '../components/SearchBar';
-import { StyledAdminHeader, StyledLayout } from '../components/styled-components';
+import { StyledAdminHeader, StyledLayout, StyledSpace } from '../components/styled-components';
 import "./AdminLayout.css"
+import useCategory from '../hooks/useCategory';
 
 type Props = {}
 const { Header, Content, Sider } = Layout;
 const AdminLayout = (props: Props) => {
+  const { data, error } = useCategory();
+  const [category, setCategory] = useState([]);
+  useEffect(() => {
+    if (data) {
+      const categoryList = data.map((item: any) => {
+        return { key: item._id, icon: React.createElement(item.icon), label: <Link to={`/admin/products/list/${item._id}`}>{item.name}</Link> }
+      });
+      setCategory(categoryList);
+    }
+  }, [data])
+
   const items2: MenuProps['items'] = [
-    { key: "cellphone", icon: <AiOutlinePhone />, label: <Link to="/admin/cellphone">Điện thoại</Link> },
-    { key: "laptop", icon: <AiOutlineLaptop />, label: <Link to="/admin">Laptop</Link> },
-    { key: "tablet", icon: <AiOutlineTablet />, label: <Link to="/admin">Máy tính bảng</Link> },
-    { key: "audio", icon: <AiOutlineAudio />, label: <Link to="/admin">Âm thanh</Link> },
+    {
+      key: "products", icon: <AiOutlineShop />, label: <Link to="/admin/products">Sản phẩm</Link>, children: category
+    },
     { key: "categories", icon: <AiOutlineSetting />, label: <Link to="/admin/category">Danh mục</Link> },
   ]
+  const navigate = useNavigate();
   return (
     <StyledLayout>
       <StyledAdminHeader>
-        <div className="logo">
+        <div className="logo" onClick={() => { navigate("/") }}>
           <img src={logoImage} style={{ "width": "64px", "height": "auto" }} alt="" />
         </div>
         <span>Dashboard</span>

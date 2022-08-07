@@ -23,7 +23,7 @@ const useProduct = () => {
     mutate(products, false);
   }
   return {
-    data, error, productAdd, productUpdate, getProductByCategory
+    data, error, mutate, productAdd, productUpdate, getProductByCategory
   }
 }
 

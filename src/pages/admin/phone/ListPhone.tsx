@@ -1,13 +1,13 @@
 import { Button, message, Result, Select, Space, Spin, Switch, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaEdit, FaPlus } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { getByCategory } from '../../../api/product'
 import { StyledAddButton, StyledAdminHeadline, StyledFormSelect, StyledSpace } from '../../../components/styled-components'
 import useCategory from '../../../hooks/useCategory'
 import useProduct from '../../../hooks/useProduct'
 import { categoryType } from '../../../types/categoryType'
-
 
 type Props = {}
 interface DataType {
@@ -25,6 +25,8 @@ const { Option } = Select
 const ListPhone = (props: Props) => {
   const { data, error, productUpdate, getProductByCategory } = useProduct()
   const { data: category, error: categoryError } = useCategory();
+  const { id } = useParams();
+  useEffect(() => { if (id) getProductByCategory(id) }, [id])
 
   const columns: ColumnsType<DataType> = [
     {
@@ -69,7 +71,7 @@ const ListPhone = (props: Props) => {
     {
       title: 'Thao tác',
       key: 'action',
-      render: (_, record) => <Link to={`/admin/cellphone/edit/${record._id}`}><FaEdit /></Link>
+      render: (_, record) => <Link to={`/admin/products/edit/${record._id}`}><FaEdit /></Link>
     },
   ];
   const navigate = useNavigate();
@@ -89,11 +91,9 @@ const ListPhone = (props: Props) => {
       }
     />
   }
-  const activeCate = category.filter((item: any) => item.status == 1);
-  console.log(data);
-  const newData = data?.filter((item: any) => item.category.status == 1);
-  console.log(newData);
-  const productData = newData.map((item: any, index: number) => {
+  const activeCate = category?.filter((item: any) => item.status == 1);
+  // const newData = data?.filter((item: any) => item.category.status == 1);
+  const productData = data.map((item: any, index: number) => {
     return {
       key: index + 1,
       name: item.name,
@@ -113,11 +113,11 @@ const ListPhone = (props: Props) => {
         <StyledAdminHeadline>
           Điện thoại
         </StyledAdminHeadline>
-        <StyledAddButton onClick={() => navigate("/admin/cellphone/create")}>
+        <StyledAddButton onClick={() => navigate("/admin/products/create")}>
           <FaPlus />
         </StyledAddButton>
       </div>
-      <StyledFormSelect style={{ "width": "200px" }} onSelect={(id: any) => getProductByCategory(id)} defaultValue={activeCate[0]._id}>
+      <StyledFormSelect style={{ "width": "200px" }} onSelect={(id: any) => getProductByCategory(id)} defaultValue={activeCate[0]._id ?? ""}>
         {activeCate.map((item: categoryType) => <Option key={item._id} value={item._id}>{item.name}</Option>)}
       </StyledFormSelect>
       <Table columns={columns} dataSource={productData} size='small' />

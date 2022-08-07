@@ -61,11 +61,11 @@ const ProductForm = ({ id }: Props) => {
     const payload = { ...values, price: +values.price, newPrice: +values.newPrice };
     if (id.length != 0) {
       productUpdate(id, payload)
-      navigate("/admin/cellphone");
+      navigate("/admin/products");
     }
     else {
       productAdd(payload);
-      navigate("/admin/cellphone");
+      navigate("/admin/products");
     }
   }
   const onFinishFailed = () => {

@@ -11,7 +11,8 @@ type Props = {}
 interface DataType {
   _id: string;
   name: string;
-  status: number
+  status: number,
+  icon: string
 }
 const ListCate = (props: Props) => {
   const [id, setId] = useState("");
@@ -22,6 +23,12 @@ const ListCate = (props: Props) => {
       title: 'Tên danh mục',
       dataIndex: 'name',
       key: 'name',
+    },
+    {
+      title: 'Biểu tượng',
+      dataIndex: 'icon',
+      key: 'icon',
+      render: (_, record) => <record.icon />
     },
     {
       title: 'Ẩn/hiện',
@@ -53,6 +60,7 @@ const ListCate = (props: Props) => {
     return {
       key: index,
       name: item.name,
+      icon: item.icon,
       status: item.status,
       _id: item._id
     }

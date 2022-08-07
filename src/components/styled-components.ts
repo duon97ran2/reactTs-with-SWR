@@ -1,4 +1,4 @@
-import { FiTrash } from 'react-icons/fi';
+import { FiTrash, FiX } from 'react-icons/fi';
 
 import styled, { keyframes } from "styled-components"
 import logo from '../logo.svg'
@@ -28,6 +28,7 @@ export const StyledHeader = styled.header`
   background: #D70018;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0px;
+  z-index:2;
   & img{
     width: 65px;
     height: auto;
@@ -38,6 +39,7 @@ export const StyledHeader = styled.header`
     align-items: center;
   }
   
+  
 `
 
 export const StyledSearchBar = styled.div`
@@ -45,11 +47,56 @@ export const StyledSearchBar = styled.div`
   padding  :5px ;
   width: 500px;
   border-radius: 5px;
-  text-align: start;
+  display: flex;
+  position: relative;
   & input {
     border: none;
     outline: none;
   } 
+  & .result{
+    width: 100%;
+    top:50px;
+    position: absolute;
+    max-height: 300px;
+    overflow: auto;
+    display: flex;
+    border-radius: 0px 0px 5px 5px;
+    flex-direction: column;
+    justify-content: start;
+    background-color: white;
+    /* width */
+    & ::-webkit-scrollbar {
+      width: 100px;
+    }
+
+/* Track */
+    & ::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+ 
+/* Handle */
+    & ::-webkit-scrollbar-thumb {
+      background: #888; 
+    }
+
+/* Handle on hover */
+    & ::-webkit-scrollbar-thumb:hover {
+      background: #555; 
+    }
+    & .result-item{
+      width: 100%;
+      padding: 10px;
+      & div{
+        & h5{
+          font-weight: bold;
+        }
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+      }
+    }
+  }
 `
 export const StyledButton = styled.a`
   color: white;
@@ -62,6 +109,9 @@ export const StyledButton = styled.a`
   :hover{
     color: white;
     background-color: rgba(255, 255, 255, 0.3);
+  }
+  & span{
+    font-size: 11px;
   }
 `
 export const StyledSideNav = styled.div`
@@ -159,4 +209,76 @@ export const StyledSpace = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+`
+export const StyledAuthContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #E5E5E5;
+`
+
+export const StyledFormBox = styled.div`
+  border-radius: 15px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1.5fr 0.5fr;
+  background: white;
+  overflow: hidden;
+  min-height: 508px;
+  & Button{
+    margin-top: 5px;
+    width: 100%;
+    margin-bottom:20px;
+  }
+  & .ant-form-item{
+    margin-bottom:0
+  }
+  & .social{
+    display: flex;
+    margin:10px; 
+    justify-content: center;
+    gap:10px;
+  }
+  
+`
+export const StyledProductContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+`
+export const StyledItemProduct = styled(Card)`
+display: flex;
+flex-direction: column;
+border:0;
+& img{
+  width: 100%;
+  height: 200px;
+  margin-bottom: 10px;
+  object-fit: contain;
+}
+& .desc {
+  display:flex;
+  flex-direction: column;
+  background-color: #E5E7EB;
+  padding: 5px;
+}
+`
+export const StyledDetailContainer = styled.div`
+  & h3{
+    margin:10px 0px;
+  }
+
+`
+
+export const StyledCartContainer = styled.div`
+  width: 400px;
+  margin: 20px auto;
+  min-height: 400px;
+  position: relative;
+  & .item{
+    margin:10px 0px;
+    position: relative;
+  }
+  
 `

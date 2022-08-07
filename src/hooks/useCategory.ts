@@ -4,6 +4,8 @@ import { add, read, update } from "../api/category";
 
 const useCategory = () => {
   const { data, error, mutate } = useSWR("/category");
+  const newData = data.filter((item: any) => item.status == 1);
+  mutate(newData, false);
   const updateCategory = async (id: string, updateData: any) => {
     const updateItem = await update(id, updateData);
     const newCategory = data.map((item: any) => item._id == id ? updateItem : item);

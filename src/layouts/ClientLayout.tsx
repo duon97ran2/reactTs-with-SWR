@@ -2,6 +2,7 @@ import React from 'react'
 import { Layout } from 'antd';
 import AppHeader from '../components/AppHeader';
 import { Outlet } from 'react-router-dom';
+import AppFooter from '../components/Footer';
 const { Header, Footer, Sider, Content } = Layout;
 
 type Props = {}
@@ -15,7 +16,7 @@ const ClientLayout = (props: Props) => {
       <Content style={{ "background": "white" }}>
         <Outlet />
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+      <AppFooter />
     </Layout>
   )
 }

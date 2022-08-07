@@ -15,3 +15,9 @@ export const update = (id: string, data: any) => {
 export const getByCategory = (id: string) => {
   return instance.get(`/products/category/${id}`)
 }
+export const getProductFilter = (text: string) => {
+  return instance.get(`/products?`)
+}
+export const getSearchProduct = (text: string) => {
+  return instance.get(`/search?q=${text}`)
+}
