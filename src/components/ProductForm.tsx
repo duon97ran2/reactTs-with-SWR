@@ -3,12 +3,14 @@ import TextArea from 'antd/lib/input/TextArea'
 import { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/lib/upload'
 import React, { useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
+import ReactQuill from 'react-quill'
 import { useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import useCategory from '../hooks/useCategory'
 import useProduct from '../hooks/useProduct'
 import { categoryType } from '../types/categoryType'
 import { StyledAddButton, StyledCancelButton, StyledFormContainer, StyledFormInput, StyledFormSelect, StyledSpace, StyledUploadContainer } from './styled-components'
+
 
 type Props = {
   id: string;
@@ -68,19 +70,26 @@ const ProductForm = ({ id }: Props) => {
       navigate("/admin/products");
     }
   }
+  const handleCancel = () => {
+    productForm.setFieldsValue({
+      image: null
+    });
+    setImageUrl(false)
+  }
+  const activeCate = category.filter((item: any) => item.status == 1);
   const onFinishFailed = () => {
     message.error("Hãy điền đầy đủ các trường")
   }
   useEffect(() => {
-    if (category) {
-      if (product) {
-        if (!imageUrl) {
-          setImageUrl(product.image[0])
-        }
-        productForm.setFieldsValue(product);
+
+    if (product) {
+      if (!imageUrl) {
+        setImageUrl(product.image[0])
       }
+      productForm.setFieldsValue(product);
     }
-  }, [category, product])
+
+  }, [product])
   if (!category || (!product && id.length != 0)) {
     return <StyledSpace >
       <Spin size="large" />
@@ -97,14 +106,6 @@ const ProductForm = ({ id }: Props) => {
       }
     />
   }
-  const handleCancel = () => {
-    productForm.setFieldsValue({
-      image: null
-    });
-    setImageUrl(false)
-  }
-  const activeCate = category.filter((item: any) => item.status == 1);
-
   return (<Form
     name="productForm"
     layout='vertical'
@@ -203,11 +204,11 @@ const ProductForm = ({ id }: Props) => {
         </Form.Item>
         <Form.Item name="feature"
           label="Đặc điểm nổi bật">
-          <TextArea rows={4} style={{ "borderRadius": "5px" }} />
+          <ReactQuill theme='snow' />
         </Form.Item>
         <Form.Item name="description"
           label="Mô tả dài">
-          <TextArea rows={4} style={{ "borderRadius": "5px" }} />
+          <ReactQuill theme='snow' />
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12 }}>
           <Button type="primary" htmlType="submit" style={{ "borderRadius": "5px" }}>

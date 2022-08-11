@@ -1,6 +1,7 @@
 import { Button, Col, Result, Row, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { FaShoppingCart } from 'react-icons/fa'
+import ReactQuill from 'react-quill'
 import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import { cache } from 'swr/dist/utils/config'
@@ -12,6 +13,27 @@ import useProduct from '../../hooks/useProduct'
 import { CurrencyConvert } from '../../utils/common'
 
 type Props = {}
+const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "align",
+  "strike",
+  "script",
+  "blockquote",
+  "background",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "video",
+  "color",
+  "code-block"
+];
 
 const Detail = (props: Props) => {
   const { id } = useParams();
@@ -52,7 +74,7 @@ const Detail = (props: Props) => {
       <Row >
         <Col span={8}>
 
-          <img style={{ "height": "350px", "objectFit": "contain", "padding": "20px", "objectPosition": "center" }} src={data.image[0]} alt="" />
+          <img style={{ "width": "100%", "height": "350px", "objectFit": "contain", "padding": "20px", "objectPosition": "center" }} src={data.image[0]} alt="" />
 
         </Col>
         <Col span={16} >
@@ -71,7 +93,7 @@ const Detail = (props: Props) => {
           </Row>
         </Col>
         <Button style={{ "width": "250px", "marginRight": "10px" }} type='primary' size='large' danger onClick={() => { addHandle(data); navigate("/cart") }}>Mua ngay</Button>
-        <Button icon={<FaShoppingCart />} onClick={() => { addHandle(data) }} type='ghost' size='large' danger />
+        <Button icon={<FaShoppingCart />} onClick={() => { addHandle(data); navigate(`/products/${data._id}`) }} type='ghost' size='large' danger />
         <span style={{ "width": "80px", "marginLeft": "10px", "textAlign": "center" }} >Thêm vào giỏ hàng</span>
       </Row>
       <h5>Sản phẩm cùng loại</h5>
@@ -82,7 +104,7 @@ const Detail = (props: Props) => {
         <span>Thưởng thức không gian giải trí cực đỉnh - Màn hình lớn 6.7 inch, độ phân giải Full HD+, 120Hz mượt mà</span>
         <span>Cấu hình Galaxy A73 5G được nâng cấp mạnh với chip Snapdragon 778G, RAM lên đến 8 GB</span>
         <span>Chiến game thoải mái không lo gián đoạn - Viên pin lớn 5000 mAh, hỗ trợ sạc nhanh 25 W</span>
-        <span>{data.description}</span>
+        <div dangerouslySetInnerHTML={{ __html: data.description ? data.description : "Chưa có thông tintin" }}></div>
       </div>
       <p>
         Năm 2022 hứa hẹn sẽ là một năm rất đáng trông đợi đối với những ai là fan của thương hiệu điện thoại Samsung. Mới đây, hãng sẽ tiếp tục cho ra mắt nhiều smartphone với sự cải tiến trong thiết kế và cấu hình, trong đó phải kể đến chiếc Samsung Galaxy A73 với nhiều cải tiến so với thế hệ trước. Vậy sản phẩm có gì nổi bật, giá bao nhiêu và liệu có nên mua không? Tìm hiểu ngay nhé!

@@ -10,7 +10,7 @@ type Props = {}
 
 const Cart = (props: Props) => {
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState([]);
+  const [total, setTotal] = useState(0);
   const { cache, removeCart, decrease, increase } = useCart();
   const cartData = cache.get("cart");
   const sum = cartData?.reduce(
@@ -30,7 +30,7 @@ const Cart = (props: Props) => {
         </Col>
         <span style={{ "color": "#D70018" }}> Giỏ hàng</span>
       </Row>
-      {cart.map((item: any) => <Row className="item" key={item._id}>
+      {cart?.map((item: any) => <Row className="item" key={item._id}>
         <Col span={8}>
           <img style={{ "width": "100%", "objectFit": "contain", "padding": "10px", "objectPosition": "center" }} src={item.image[0]} alt="" />
         </Col>

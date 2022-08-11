@@ -24,6 +24,19 @@ const Home = (props: Props) => {
   }
   const [tiles, setTiles] = useState<Array<any>>([]);
   useEffect(() => {
+    if (data) {
+      const categoryList = data.map((item: any) => {
+        return {
+          key: item._id,
+          label: (
+            <Link style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "center" }} to={`/category/${item._id}`}> <span>{item.name}</span> <AiOutlineRight /></Link>
+          ),
+        }
+      });
+      setCategory(categoryList);
+    }
+  }, [])
+  useEffect(() => {
     let arr = []
     for (let i = 0; i < 20; i++) {
       let item = { id: i, name: "Phụ kiện Apple", color: generateRandomColor(), image: "https://s3-alpha-sig.figma.com/img/17d0/f3ac/9197a48bcbf5b568b402ae906b5e132c?Expires=1660521600&Signature=T1eGH45FVAQ49KWnl9RjQp8LL0N~Tp25uR-zXAyBZQX-5-ewSc~9enzelSCl~9DLislsegtxSnle79wE2uV9qYfMqzC82~wDAjeosewr0pQfg6gXkiu4IXyVyXAdsnJ-Lmgukg4e2IGDkCqDePaEYmgQlF-Y41Z~rAETGSLGWoiZ4OgJmQH8TIDwU-96Som71vKYsz8gt1~4MqaW~H7wP9cycECwqTIbbm3uPW7HWXGq547LspfL3oLKhl4Ca9EEMo0QjmXmS6uDS60ZrYB~nV6BLNyLpzE5gBGKShOyzh2cJ6xWx~oiBIjt74rYyVAKO9RLXCpI068Juglbh0c-Dg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" }
@@ -31,28 +44,8 @@ const Home = (props: Props) => {
     }
     setTiles(arr);
   }, [])
-  useEffect(() => {
-    if (data) {
-      const categoryList = data.map((item: any) => {
-        return { key: item._id, icon: React.createElement(item.icon), label: <Link to={`/admin/products/list/${item._id}`}>{item.name} </Link> }
-      });
-      setCategory(categoryList);
-    }
-  }, [])
 
-  const menu = (
-    <Menu style={{ width: 256 }} mode="vertical"
-      items={data.map((item: any) => {
-        return {
-          key: item._id,
-          label: (
-            <Link style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "center" }} to={`/category/${item._id}`}> <span>{item.name}</span> <AiOutlineRight /></Link>
-          ),
-        }
-      })}
-    />
-  );
-  if (!productData) {
+  if (!productData || !data) {
     return <StyledSpace >
       <Spin size="large" />
     </StyledSpace>
@@ -109,7 +102,9 @@ const Home = (props: Props) => {
   return (
     <div>
       <div style={{ "display": "grid", "gridTemplateColumns": "0.5fr auto", "gap": '20px', "margin": "10px 0px" }}>
-        {menu}
+        <Menu style={{ width: 256 }} mode="vertical"
+          items={category}
+        />
         {/* <Menu style={{ width: 256 }} mode="vertical" items={items} /> */}
         <img src={banner} alt="" width={"100%"} />
       </div>

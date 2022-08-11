@@ -9,7 +9,7 @@ type Props = {
 
 const PrrivateRouter = (props: Props) => {
   if (props.role != 1) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/login" replace />
   }
   return (
     props.children

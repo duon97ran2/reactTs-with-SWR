@@ -16,11 +16,11 @@ const AdminLayout = (props: Props) => {
   useEffect(() => {
     if (data) {
       const categoryList = data.map((item: any) => {
-        return { key: item._id, icon: React.createElement(item.icon), label: <Link to={`/admin/products/list/${item._id}`}>{item.name}</Link> }
+        return { key: item._id, label: <Link to={`/admin/products/list/${item._id}`}>{item.name}</Link> }
       });
       setCategory(categoryList);
     }
-  }, [data])
+  }, [])
 
   const items2: MenuProps['items'] = [
     {
@@ -29,6 +29,22 @@ const AdminLayout = (props: Props) => {
     { key: "categories", icon: <AiOutlineSetting />, label: <Link to="/admin/category">Danh mục</Link> },
   ]
   const navigate = useNavigate();
+  if (!data) {
+    return <StyledSpace >
+      <Spin size="large" />
+    </StyledSpace>
+  }
+  if (error) {
+    return <Result
+      status="warning"
+      title="There are some problems with your operation."
+      extra={
+        <Button type="primary" key="console" onClick={() => { window.location.reload() }}>
+          Tải lại
+        </Button>
+      }
+    />
+  }
   return (
     <StyledLayout>
       <StyledAdminHeader>
@@ -36,7 +52,6 @@ const AdminLayout = (props: Props) => {
           <img src={logoImage} style={{ "width": "64px", "height": "auto" }} alt="" />
         </div>
         <span>Dashboard</span>
-        <SearchBar />
         <span style={{ "position": "absolute", "right": "10%", "fontWeight": "600" }}>Hello Admin</span>
       </StyledAdminHeader>
       <Layout>

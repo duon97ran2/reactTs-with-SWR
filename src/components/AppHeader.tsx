@@ -6,7 +6,7 @@ import { FiMapPin, FiPhone, FiTruck } from "react-icons/fi"
 import { RiShoppingBagLine } from "react-icons/ri"
 import useAuth from '../hooks/useAuth';
 import SearchBar from './SearchBar';
-import { Avatar, Badge, Dropdown, Menu, Space } from 'antd';
+import { Avatar, Badge, Dropdown, Menu, message, Space } from 'antd';
 import { FaArrowDown } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import useSWR, { useSWRConfig } from 'swr';
@@ -39,7 +39,7 @@ const AppHeader = (props: Props) => {
         {
           key: '4',
           danger: true,
-          label: <div onClick={() => { cache.delete("user"), navigate("/") }}>Log out</div>,
+          label: <div onClick={() => { cache.delete("user"), message.success("Đăng xuất thành công"); navigate("/") }}>Log out</div>,
         },
       ]}
     />
@@ -62,7 +62,7 @@ const AppHeader = (props: Props) => {
           <FiTruck style={{ "fontSize": "30px", "margin": "0px 5px" }} />
           <span>Tra cứu <br /> đơn hàng</span>
         </StyledButton>
-        <Badge size="small" color='yellow' count={cart.length}>
+        <Badge size="small" color='yellow' count={cart?.length}>
           <StyledButton onClick={() => { navigate("/cart") }}>
             <RiShoppingBagLine style={{ "fontSize": "30px", "margin": "0px 5px" }} />
             <span>Giỏ  <br />hàng</span>

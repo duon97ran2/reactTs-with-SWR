@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import 'react-quill/dist/quill.snow.css';
 import AppHeader from './components/AppHeader'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';

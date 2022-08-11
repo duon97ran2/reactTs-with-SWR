@@ -129,6 +129,7 @@ export const StyledLayout = styled(Layout)`
 export const StyledAdminHeader = styled(Header)`
 background: #00B0D7;
 display: flex;
+position: relative;
 line-height: initial;
 align-items: center;
 gap:20px;
